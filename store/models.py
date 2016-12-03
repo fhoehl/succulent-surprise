@@ -3,9 +3,11 @@ from __future__ import unicode_literals
 from django.db import models
 
 class Order(models.Model):
+    STATES = (('I', 'Initiated'), ('S', 'Submitted'), ('F', 'Fulfill'),
+              ('D', 'Dispatched'), ('E', 'Error'))
+
     updated_at = models.DateTimeField('date updated')
-    state = (('I', 'Initiated'), ('S', 'Submitted'), ('F', 'Fulfill'),
-             ('D', 'Dispatched'), ('E', 'Error'))
+    state = models.CharField(max_length=1, choices=STATES, blank=True)
 
     from_first_name = models.CharField('Sender first name', max_length=60)
     from_last_name = models.CharField('Sender last name', max_length=60)
