@@ -4,7 +4,7 @@ from django.db import models
 
 class Order(models.Model):
     updated_at = models.DateTimeField('date updated')
-    state = (('I', 'Initiated'), ('S', 'Submitted'), ('F', 'Fulfill')
+    state = (('I', 'Initiated'), ('S', 'Submitted'), ('F', 'Fulfill'),
              ('D', 'Dispatched'), ('E', 'Error'))
 
     from_first_name = models.CharField('Sender first name', max_length=60)
