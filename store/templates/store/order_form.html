@@ -92,9 +92,15 @@
 
             <div class="cf">
                 <div class="fl w-100 pa2">
-                    <label class="f6 f5-ns fw1 cf db mv1" for="id_delivery_note">Note</label>
-                    <input class="w-100 pa2 input-reset hover-green ba b--dark-green" id="id_delivery_note" maxlength="6" name="delivery_note" type="text">
+                    <label class="f6 f5-ns fw1 cf db mv1" for="id_delivery_note">Note (make it fit in a Tweet!)</label>
+                    <input class="w-100 pa4 input-reset hover-green ba b--dark-green" id="id_delivery_note" maxlength="140" name="delivery_note" type="text">
                     {{ form.delivery_note.errors }}
+                </div>
+            </div>
+
+            <div class="cf">
+                <div class="fl w-100 pa2">
+                  <label class="pa0 ma0 lh-copy f6 pointer"><input type="checkbox" name="tos" required=""> I agree to the term and conditions</label>
                 </div>
             </div>
 
