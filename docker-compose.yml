@@ -1,17 +1,15 @@
-version: '2'
-services:
-  postgres:
-    image: postgres:alpine
-    environment:
-      POSTGRES_USER: "succulent"
-      POSTGRES_PASSWORD: "super"
-      PGDATA: "/var/lib/postgresql/data/pgdata"
-  server:
-    build: .
-    command: ./run.sh
-    volumes:
-      - .:/app
-    depends_on:
-      - postgres
-    links:
-      - postgres
+postgres:
+  image: postgres:alpine
+  environment:
+    POSTGRES_USER: "succulent"
+    POSTGRES_PASSWORD: "super"
+    PGDATA: "/var/lib/postgresql/data/pgdata"
+server:
+  build: .
+  command: ./run.sh
+  volumes:
+    - .:/app
+  depends_on:
+    - postgres
+  links:
+    - postgres
