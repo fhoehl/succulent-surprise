@@ -24,9 +24,8 @@ def checkout(request):
         form = CheckoutForm(request.POST)
 
         if form.is_valid():
-            print form
-            print form.cleaned_data
-            order = Order(from_first_name=form.cleaned_data['from_first_name'],
+            order = Order(state='S',
+                          from_first_name=form.cleaned_data['from_first_name'],
                           from_last_name=form.cleaned_data['from_last_name'],
                           from_email=request.POST.get('stripeEmail'),
                           stripe_tx=request.POST.get('stripeToken'),
@@ -39,6 +38,16 @@ def checkout(request):
                           delivery_postcode=form.cleaned_data['delivery_postcode'],
                           delivery_note=form.cleaned_data['delivery_note'],
                          )
+
+            order.save()
+
+            # Process payment
+            try:
+                order.state = 'P'
+            except Exception, e:
+                order.state = 'E'
+                pass
+
             order.save()
 
             return HttpResponseRedirect('/thanks/')

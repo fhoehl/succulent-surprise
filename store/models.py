@@ -31,7 +31,7 @@ class Order(models.Model):
         return super(Order, self).save(*args, **kwargs)
 
     def __str__(self):
-        return "[%s] %s %s for %s %s - %s" % (self.get_state_display(),
-                                              self.from_first_name, self.from_last_name,
-                                              self.to_first_name, self.to_last_name,
-                                              self.delivery_postcode)
+        return "[ %s ] %s %s for %s %s - %s" % (self.get_state_display(),
+                                                self.from_first_name, self.from_last_name,
+                                                self.to_first_name, self.to_last_name,
+                                                self.delivery_postcode)
