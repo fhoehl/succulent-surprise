@@ -1,38 +1,8 @@
+{% extends "store/base.html" %}
+
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-  <title> </title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://unpkg.com/tachyons/css/tachyons.min.css">
-  <link rel="stylesheet" href="twemoji-awesome.css">
-  <link href="https://fonts.googleapis.com/css?family=Courgette|Lobster|Ranga:400,700" rel="stylesheet">
-  <style>
-    .ranga {
-      font-family: 'Courgette', cursive;
-      text-rendering: geometricPrecision;
-    }
-    .text-shadow {
-      text-shadow: 2px 2px 0px white;
-    }
-    .rotate-30deg {
-      transform: rotate(-30deg);
-    }
-    .animate {
-      transition: all .3s ease-in;
-    }
-    .start {
-      opacity: 0.5;
-      color: darkgreen;
-      xtransform: translateY(-.1rem) translateZ(0);
-    }
-    .end {
-      opacity: 0.7;
-      color: coral;
-      xtransform: translateY(.1rem) translateZ(0);
-    }
-  </style>
-  <body class="w-100 bg-near-white">
+{% block header %}
     <header class="tc pv6 ph3 bg-yellow">
       <h1 class="ranga f1 f-headline-ns text-shadow lh-solid rotate-30deg o-80">Succulent<br/>Surprise</h1>
     </header>
@@ -40,7 +10,9 @@
     <div class="w-100 overflow-hidden">
       <canvas id="paint-job" width="100%" height="50px"/>
     </div>
+{% endblock %}
 
+{% block content %}
     <section class="ph3 ph5-ns pb3 cf mt0 sans-serif">
       <div class="tc center">
         <img class="fit w-25 center" src="{% static "store/plant.svg" %}"/>
@@ -90,54 +62,4 @@
       </div>
     </section>
 
-    <footer class="pv4 ph3 ph5-m ph6-l mid-gray">
-      <small class="f6 db tc">© 2016 <b class="ttu">Succulent Surprise</b>., All Rights Reserved</small>
-      <div class="tc mt3">
-        <a href="/terms/"    title="Terms" class="f6 dib ph2 link mid-gray dim">Terms of Use</a>
-        <a href="/privacy/"  title="Privacy" class="f6 dib ph2 link mid-gray dim">Privacy</a>
-      </div>
-    </footer>
-
-    <script type="text/javascript">
-      var changeFunnyText = (function () {
-        var funnyTextEl = document.getElementById('funny-placeholder')
-          var funnyTexts = ['mum', 'bae', 'sister', 'crush', 'brother',
-                            'granny', 'tinder date', 'self', 'dad', 'boss',
-                            'bff'];
-        var index = 0;
-
-        return function () {
-          funnyTextEl.classList.toggle('start');
-          funnyTextEl.innerText = funnyTexts[index];
-          index = (index + 1) % funnyTexts.length;
-          funnyTextEl.classList.toggle('end');
-        }
-      })
-
-      var paintCanvas = (function () {
-        var canvas = document.getElementById('paint-job')
-        var ctx = canvas.getContext('2d')
-        var W = Math.min(600, window.innerWidth)
-
-        canvas.width = window.innerWidth
-        ctx.lineWidth = 6;
-        ctx.fillStyle = "gold";
-        ctx.beginPath();
-
-        var o = 0
-        if (W === 600) {
-          o = window.innerWidth / 2 - 300
-        }
-
-        ctx.moveTo(o, 0);
-        ctx.quadraticCurveTo(o + W / 4, 60, o + W / 2, 0);
-        ctx.quadraticCurveTo(o + W / 2 + W / 8, 40, o + W - W / 4, 0);
-        ctx.quadraticCurveTo(o + W - W / 8, 40, o + W, 0);
-        ctx.fill();
-      })
-
-      window.setInterval(changeFunnyText(), 2000)
-      paintCanvas()
-    </script>
-  </body>
-</html>
+{% endblock %}
