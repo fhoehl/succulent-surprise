@@ -17,7 +17,7 @@
 
 {% block content %}
 <div class="mw6 center ma4">
-  <form action="{% url 'order' %}" method="POST">
+  <form action="{% url 'checkout' %}" method="POST">
     {% csrf_token %}
 
     <h2 class="f2 fw1 cf tc">Order</h2>
