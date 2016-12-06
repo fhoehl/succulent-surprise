@@ -22,18 +22,29 @@
 
     <h2 class="f2 fw1 cf tc">Order</h2>
 
+    <div class="cf f6 lh-copy measure-narrow light-grey tc center">
+        <p>UK delivery only. Succies are sent first class and should be with you in a day or two.</p>
+    </div>
+
+    {% if form.errors %}
+        <div class="cf f6 lh-copy light-red tc">
+            <p>There is some missing information&hellip; Please check the form again.</p>
+            {{ form.errors }}
+        </div>
+    {% endif %}
+
     <h3 class="f4 f3-ns fw1 cf ph2">Your Info</h3>
 
     <div class="cf">
       <div class="fl w-50 pa2">
         <label class="f6 f5-ns fw1 cf db mv1" for="id_from_first_name">First Name</label>
-        <input class="w-100 pa2 input-reset hover-green ba b--dark-green" id="id_from_first_name" maxlength="60" name="from_first_name" type="text" required="">
+        <input class="w-100 pa2 input-reset hover-green ba b--dark-green" id="id_from_first_name" maxlength="60" name="from_first_name" type="text" required="" value="{{ form.from_first_name.value|default:'' }}">
         {{ form.from_first_name.errors }}
       </div>
 
       <div class="fl w-50 pa2">
-        <label class="f6 f5-ns fw1 cf db mv1" for="id_from_first_name">Last Name</label>
-        <input class="w-100 pa2 input-reset hover-green ba b--dark-green" id="id_from_first_name" maxlength="60" name="from_first_name" type="text" required="">
+        <label class="f6 f5-ns fw1 cf db mv1" for="id_from_last_name">Last Name</label>
+        <input class="w-100 pa2 input-reset hover-green ba b--dark-green" id="id_from_last_name" maxlength="60" name="from_last_name" type="text" required="" value="{{ form.from_last_name.value|default:'' }}">
         {{ form.from_last_name.errors }}
       </div>
     </div>
@@ -43,13 +54,13 @@
     <div class="cf">
       <div class="fl w-50 pa2">
         <label class="f6 f5-ns fw1 cf db mv1" for="id_to_first_name">First Name</label>
-        <input class="w-100 pa2 input-reset hover-green ba b--dark-green" id="id_to_first_name" maxlength="60" name="to_first_name" type="text" required="">
+        <input class="w-100 pa2 input-reset hover-green ba b--dark-green" id="id_to_first_name" maxlength="60" name="to_first_name" type="text" required="" value="{{ form.to_first_name.value|default:'' }}">
         {{ form.to_first_name.errors }}
       </div>
 
       <div class="fl w-50 pa2">
-        <label class="f6 f5-ns fw1 cf db mv1" for="id_to_first_name">Last Name</label>
-        <input class="w-100 pa2 input-reset hover-green ba b--dark-green" id="id_to_first_name" maxlength="60" name="to_first_name" type="text" required="">
+        <label class="f6 f5-ns fw1 cf db mv1" for="id_to_last_name">Last Name</label>
+        <input class="w-100 pa2 input-reset hover-green ba b--dark-green" id="id_to_last_name" maxlength="60" name="to_last_name" type="text" required="" value="{{ form.to_last_name.value|default:'' }}">
         {{ form.to_last_name.errors }}
       </div>
     </div>
@@ -57,7 +68,7 @@
     <div class="cf">
       <div class="fl w-100 pa2">
         <label class="f6 f5-ns fw1 cf db mv1" for="id_delivery_company_name">Company Name (optional)</label>
-        <input class="w-100 pa2 input-reset hover-green ba b--dark-green" id="id_delivery_company_name" maxlength="60" name="delivery_company_name" type="text">
+        <input class="w-100 pa2 input-reset hover-green ba b--dark-green" id="id_delivery_company_name" maxlength="60" name="delivery_company_name" type="text" value="{{ form.delivery_company_name.value|default:'' }}">
         {{ form.delivery_company_name.errors }}
       </div>
     </div>
@@ -65,7 +76,7 @@
     <div class="cf">
       <div class="fl w-100 pa2">
         <label class="f6 f5-ns fw1 cf db mv1" for="id_delivery_first">Address Line 1</label>
-        <input class="w-100 pa2 input-reset hover-green ba b--dark-green" id="id_delivery_first" maxlength="60" name="delivery_first" type="text" required="">
+        <input class="w-100 pa2 input-reset hover-green ba b--dark-green" id="id_delivery_first" maxlength="60" name="delivery_first" type="text" required="" value="{{ form.delivery_first.value|default:'' }}">
         {{ form.delivery_first.errors }}
       </div>
     </div>
@@ -73,7 +84,7 @@
     <div class="cf">
       <div class="fl w-100 pa2">
         <label class="f6 f5-ns fw1 cf db mv1" for="id_delivery_second">Address Line 2 (optional)</label>
-        <input class="w-100 pa2 input-reset hover-green ba b--dark-green" id="id_delivery_second" maxlength="60" name="delivery_second" type="text">
+        <input class="w-100 pa2 input-reset hover-green ba b--dark-green" id="id_delivery_second" maxlength="60" name="delivery_second" type="text" value="{{ form.delivery_second.value|default:'' }}">
         {{ form.delivery_second.errors }}
       </div>
     </div>
@@ -81,7 +92,7 @@
     <div class="cf">
       <div class="fl w-100 pa2">
         <label class="f6 f5-ns fw1 cf db mv1" for="id_delivery_thirs">Address Line 3 (optional)</label>
-        <input class="w-100 pa2 input-reset hover-green ba b--dark-green" id="id_delivery_third" maxlength="60" name="delivery_third" type="text">
+        <input class="w-100 pa2 input-reset hover-green ba b--dark-green" id="id_delivery_third" maxlength="60" name="delivery_third" type="text" value="{{ form.delivery_third.value|default:'' }}">
         {{ form.delivery_third.errors }}
       </div>
     </div>
@@ -89,15 +100,19 @@
     <div class="cf">
       <div class="fl w-50 pa2">
         <label class="f6 f5-ns fw1 cf db mv1" for="id_delivery_postcode">Postcode</label>
-        <input class="w-100 pa2 input-reset hover-green ba b--dark-green" id="id_delivery_postcode" maxlength="6" name="delivery_postcode" type="text" required="">
+        <input class="w-100 pa2 input-reset hover-green ba b--dark-green" id="id_delivery_postcode" maxlength="6" name="delivery_postcode" type="text" required="" value="{{ form.delivery_postcode.value|default:'' }}">
         {{ form.delivery_postcode.errors }}
+      </div>
+      <div class="fl w-50 pa2">
+        <label class="f6 f5-ns fw1 cf db mv1" for="id_delivery_country">Country</label>
+        <input class="w-100 pa2 input-reset hover-green ba b--dark-green" id="id_delivery_country" maxlength="6" name="delivery_country" type="text" value="United Kingdom" disabled="true">
       </div>
     </div>
 
     <div class="cf">
       <div class="fl w-100 pa2">
         <label class="f6 f5-ns fw1 cf db mv1" for="id_delivery_note">Optional handwritten note! (make it fit in a Tweet!)</label>
-        <input class="w-100 pa4 input-reset hover-green ba b--dark-green" id="id_delivery_note" maxlength="140" name="delivery_note" type="text">
+        <input class="w-100 pa4 input-reset hover-green ba b--dark-green" id="id_delivery_note" maxlength="140" name="delivery_note" type="text" value="{{ form.delivery_note.value|default:'' }}">
         {{ form.delivery_note.errors }}
       </div>
     </div>
