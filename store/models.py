@@ -1,9 +1,10 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.utils import timezone
 
 class Order(models.Model):
-    STATES = (('I', 'Initiated'), ('S', 'Submitted'), ('F', 'Fulfill'),
+    STATES = (('S', 'Submitted'), ('P', 'Paid'),
               ('D', 'Dispatched'), ('E', 'Error'))
 
     updated_at = models.DateTimeField('Date created')
@@ -24,3 +25,13 @@ class Order(models.Model):
     delivery_third = models.CharField('Address line 3', max_length=100, blank=True)
     delivery_postcode = models.CharField('Postcode', max_length=10)
     delivery_note = models.CharField('Gift note', max_length=200, blank=True)
+
+    def save(self, *args, **kwargs):
+        self.updated_at = timezone.now()
+        return super(Order, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return "[%s] %s %s for %s %s - %s" % (self.get_state_display(),
+                                              self.from_first_name, self.from_last_name,
+                                              self.to_first_name, self.to_last_name,
+                                              self.delivery_postcode)
