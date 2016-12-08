@@ -7,6 +7,7 @@ postgres:
 server:
   build: .
   command: ./run.sh
+  env_file: .env
   volumes:
     - .:/app
   links:
