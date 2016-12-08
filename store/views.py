@@ -40,10 +40,8 @@ def process_payment(stripe_email, stripe_token, form):
                                       currency='gbp',
                                       source=stripe_token,
                                       description='One succulent surprise')
+
         order.state = 'P'
-
-        return HttpResponseRedirect('/thanks/')
-
     except stripe.error.CardError as e:
         # The card has been declined
         order.state = 'E'
@@ -62,7 +60,10 @@ def checkout(request):
         if form.is_valid():
             stripe_email = request.POST['stripeEmail'],
             stripe_token = request.POST['stripeToken'],
-            process_payment(stripe_email[0], stripe_token[0], form)
+            order = process_payment(stripe_email[0], stripe_token[0], form)
+
+            if order.state == 'P':
+                return HttpResponseRedirect('/thanks/')
 
     return render(request, 'store/order_form.html', {'form': form})
 
