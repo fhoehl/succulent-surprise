@@ -19,54 +19,52 @@ class CheckoutForm(ModelForm):
                   'delivery_company_name', 'delivery_first', 'delivery_second',
                   'delivery_third', 'delivery_postcode', 'delivery_note']
 
+def process_payment(stripe_email, stripe_token, form):
+    order = Order(state='S',
+                  from_first_name=form.cleaned_data['from_first_name'],
+                  from_last_name=form.cleaned_data['from_last_name'],
+                  from_email=stripe_email,
+                  stripe_tx=stripe_token,
+                  to_first_name=form.cleaned_data['to_first_name'],
+                  to_last_name=form.cleaned_data['to_last_name'],
+                  delivery_company_name=form.cleaned_data['delivery_company_name'],
+                  delivery_first=form.cleaned_data['delivery_first'],
+                  delivery_second=form.cleaned_data['delivery_second'],
+                  delivery_third=form.cleaned_data['delivery_third'],
+                  delivery_postcode=form.cleaned_data['delivery_postcode'],
+                  delivery_note=form.cleaned_data['delivery_note'],)
+
+    try:
+        # Create a charge: this will charge the user's card
+        charge = stripe.Charge.create(amount=1700,
+                                      currency='gbp',
+                                      source=stripe_token,
+                                      description='One succulent surprise')
+        order.state = 'P'
+
+        return HttpResponseRedirect('/thanks/')
+
+    except stripe.error.CardError as e:
+        # The card has been declined
+        order.state = 'E'
+    finally:
+        order.save()
+
+    return order
+
 def checkout(request):
+    if request.method != 'POST':
+        form = CheckoutForm()
+
     if request.method == 'POST':
         form = CheckoutForm(request.POST)
 
-        try:
-            assert form.is_valid()
-
-            order = Order(state='S',
-                          from_first_name=form.cleaned_data['from_first_name'],
-                          from_last_name=form.cleaned_data['from_last_name'],
-                          from_email=request.POST.get('stripeEmail'),
-                          stripe_tx=request.POST.get('stripeToken'),
-                          to_first_name=form.cleaned_data['to_first_name'],
-                          to_last_name=form.cleaned_data['to_last_name'],
-                          delivery_company_name=form.cleaned_data['delivery_company_name'],
-                          delivery_first=form.cleaned_data['delivery_first'],
-                          delivery_second=form.cleaned_data['delivery_second'],
-                          delivery_third=form.cleaned_data['delivery_third'],
-                          delivery_postcode=form.cleaned_data['delivery_postcode'],
-                          delivery_note=form.cleaned_data['delivery_note'],
-                         )
-
-            order.save()
-
-            # Process payment
-            token = request.POST.get('stripeToken')
-
-            # Create a charge: this will charge the user's card
-            charge = stripe.Charge.create(amount=1700,
-                                          currency='gbp',
-                                          source=token,
-                                          description='One succulent surprise')
-            order.state = 'P'
-
-            return HttpResponseRedirect('/thanks/')
-
-        except AssertionError as e:
-            pass
-        except stripe.error.CardError as e:
-            # The card has been declined
-            order.state = 'E'
-        finally:
-            order.save()
-    else:
-        form = CheckoutForm()
+        if form.is_valid():
+            stripe_email = request.POST.get('stripeEmail'),
+            stripe_token = request.POST.get('stripeToken'),
+            process_payment(stripe_email, stripe_token, form)
 
     return render(request, 'store/order_form.html', {'form': form})
-
 
 def index(request):
     return render(request, 'store/index.html')

@@ -51,21 +51,27 @@
     <script type="text/javascript">
       var changeFunnyText = (function () {
         var funnyTextEl = document.getElementById('funny-placeholder')
-          var funnyTexts = ['mum', 'bae', 'sister', 'crush', 'brother',
-                            'granny', 'tinder date', 'self', 'dad', 'boss',
-                            'bff'];
+        var funnyTexts = ['mum', 'bae', 'sister', 'crush', 'brother',
+                          'granny', 'tinder date', 'self', 'dad', 'boss',
+                          'bff'];
         var index = 0;
 
-        return function () {
-          funnyTextEl.classList.toggle('start');
-          funnyTextEl.innerText = funnyTexts[index];
-          index = (index + 1) % funnyTexts.length;
-          funnyTextEl.classList.toggle('end');
+        if (funnyTextEl) {
+          return function () {
+            funnyTextEl.classList.toggle('start');
+            funnyTextEl.innerText = funnyTexts[index];
+            index = (index + 1) % funnyTexts.length;
+            funnyTextEl.classList.toggle('end');
+          }
         }
+
+        return function () { };
       })
 
       var paintCanvas = (function () {
         var canvas = document.getElementById('paint-job')
+        if (!canvas) { return; }
+
         var ctx = canvas.getContext('2d')
         var W = Math.min(600, window.innerWidth)
 
