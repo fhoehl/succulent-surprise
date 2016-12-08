@@ -1,15 +1,15 @@
+import os
+
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic.edit import CreateView, ModelFormMixin
 from django.forms import Form, ModelForm
 
+import stripe
+
 from store.models import Order
 
-class OrderCreate(CreateView):
-    model = Order
-    http_method_names = ['get', 'post']
-    success_url = '/thanks/'
-    fields = ['from_first_name', 'from_last_name', 'from_email', 'to_first_name', 'to_last_name', 'delivery_company_name', 'to_first_name']
+stripe.api_key = os.environ['STRIPE_API_KEY']
 
 class CheckoutForm(ModelForm):
     class Meta:
@@ -23,7 +23,9 @@ def checkout(request):
     if request.method == 'POST':
         form = CheckoutForm(request.POST)
 
-        if form.is_valid():
+        try:
+            assert form.is_valid()
+
             order = Order(state='S',
                           from_first_name=form.cleaned_data['from_first_name'],
                           from_last_name=form.cleaned_data['from_last_name'],
@@ -42,19 +44,29 @@ def checkout(request):
             order.save()
 
             # Process payment
-            try:
-                order.state = 'P'
-            except Exception, e:
-                order.state = 'E'
-                pass
+            token = request.POST.get('stripeToken')
 
-            order.save()
+            # Create a charge: this will charge the user's card
+            charge = stripe.Charge.create(amount=1700,
+                                          currency='gbp',
+                                          source=token,
+                                          description='One succulent surprise')
+            order.state = 'P'
 
             return HttpResponseRedirect('/thanks/')
+
+        except AssertionError as e:
+            pass
+        except stripe.error.CardError as e:
+            # The card has been declined
+            order.state = 'E'
+        finally:
+            order.save()
     else:
         form = CheckoutForm()
 
     return render(request, 'store/order_form.html', {'form': form})
+
 
 def index(request):
     return render(request, 'store/index.html')
