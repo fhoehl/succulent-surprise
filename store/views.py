@@ -60,9 +60,9 @@ def checkout(request):
         form = CheckoutForm(request.POST)
 
         if form.is_valid():
-            stripe_email = request.POST.get('stripeEmail'),
-            stripe_token = request.POST.get('stripeToken'),
-            process_payment(stripe_email, stripe_token, form)
+            stripe_email = request.POST['stripeEmail'],
+            stripe_token = request.POST['stripeToken'],
+            process_payment(stripe_email[0], stripe_token[0], form)
 
     return render(request, 'store/order_form.html', {'form': form})
 
