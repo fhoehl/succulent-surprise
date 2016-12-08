@@ -9,7 +9,5 @@ server:
   command: ./run.sh
   volumes:
     - .:/app
-  depends_on:
-    - postgres
   links:
     - postgres
