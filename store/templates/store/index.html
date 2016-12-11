@@ -13,12 +13,16 @@
 {% endblock %}
 
 {% block content %}
-    <section class="ph3 ph5-ns pb3 cf mt0 sans-serif">
+    <section class="ph3 ph5-ns cf m0 sans-serif">
       <div class="tc center">
         <img class="fit w-25 center" src="{% static "store/plant.svg" %}"/>
       </div>
       <p class="f2 tc center measure-narrow lh-copy">Send your&nbsp;<span id="funny-placeholder" class="dib start animate b">self</span><br/> a super succulent in a tiny tumbler!</p>
       <p class="f3 i serif tc center measure-narrow lh-copy">For only £17 we select a succie, pick a pot and pop it in the post.</p>
+    </section>
+
+    <section class="ph3 cf mt0 sans-serif tc pv4 pv5-ns">
+      <a href="{% url 'checkout' %}" class="f3 dib ba b--black-20 bg-green near-white ph4 pv3 br2 link dim no-underline">Order now!</a>
     </section>
 
     <section class="ph3 ph5-ns pv3 cf mt0 sans-serif w-75-ns center">
@@ -34,10 +38,6 @@
           <img class="w-100 db outline black-10" src="{% static "store/c.jpg" %}"/>
         </div>
       </div>
-    </section>
-
-    <section class="ph3 ph5-ns cf mt0 sans-serif tc pv5">
-      <a href="{% url 'checkout' %}" class="f5 f4-ns dib ba b--black-20 bg-green white ph3 ph4-ns pv2 pv3-ns br2 no-underline">Order now!</a>
     </section>
 
     <section class="ph3 ph5-ns pv3 cf mt0 sans-serif w-75-ns center">
