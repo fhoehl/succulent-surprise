@@ -99,7 +99,7 @@
     <div class="cf">
       <div class="fl w-50 pa2">
         <label class="f6 f5-ns fw1 cf db mv1" for="id_delivery_postcode">Postcode</label>
-        <input class="w-100 pa2 input-reset hover-green ba b--dark-green" id="id_delivery_postcode" maxlength="6" name="delivery_postcode" type="text" required="" value="{{ form.delivery_postcode.value|default:'' }}">
+        <input class="w-100 pa2 input-reset hover-green ba b--dark-green" id="id_delivery_postcode" maxlength="10" name="delivery_postcode" type="text" required="" value="{{ form.delivery_postcode.value|default:'' }}">
         {{ form.delivery_postcode.errors }}
       </div>
       <div class="fl w-50 pa2">
