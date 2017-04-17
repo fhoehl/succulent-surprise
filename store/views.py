@@ -36,7 +36,7 @@ def process_payment(stripe_email, stripe_token, form):
 
     try:
         # Create a charge: this will charge the user's card
-        charge = stripe.Charge.create(amount=1700,
+        charge = stripe.Charge.create(amount=1600,
                                       currency='gbp',
                                       source=stripe_token,
                                       description='One succulent surprise')
